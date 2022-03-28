@@ -7,6 +7,7 @@ let finalAnswer = 0;
 
 ///////////////////////////////////////////DOM Manipulation Begin///////////////////////////////////////////
 //Create container variables
+const rowZero = document.querySelector(".rowZero");
 const rowOne = document.querySelector(".rowOne");
 const rowTwo = document.querySelector(".rowTwo");
 const rowThree = document.querySelector(".rowThree");
@@ -17,7 +18,7 @@ const rowSix = document.querySelector(".rowSix")
 const mainScreenText = document.createElement("h1")
 mainScreenText.classList.add('mainScreenText')
 mainScreenText.innerHTML = mainScreen;
-rowOne.appendChild(mainScreenText);
+rowZero.appendChild(mainScreenText);
 mainScreen = " ";
 
 //Create "mod" button
@@ -34,7 +35,7 @@ rowOne.appendChild(modButton);
 //Create "Divide by 0" button
 const dzButton = document.createElement("button");
 dzButton.classList.add('dzButton');
-dzButton.innerHTML = "Div by 0";
+dzButton.innerHTML = "DIV/0";
 dzButton.type = "submit";
 dzButton.name = "formBtn";
 dzButton.onclick = function () {
@@ -63,11 +64,10 @@ rowOne.appendChild(clearButton);
 //Create "<--" button
 const backspaceButton = document.createElement("button");
 backspaceButton.classList.add('backspaceButton');
-backspaceButton.innerHTML = "<--";
+backspaceButton.innerHTML = "DEL";
 backspaceButton.type = "submit";
 backspaceButton.name = "formBtn";
 backspaceButton.onclick = function () {
-    console.log(mainScreen);
     if (mainScreen.length == 2) {
         mainScreen = "Awaiting input";
         mainScreenText.innerHTML = mainScreen;
@@ -98,7 +98,6 @@ backspaceButton.onclick = function () {
         mainScreen = mainScreen.substring(0, mainScreen.length - 1);
         mainScreenText.innerHTML = mainScreen;
     }
-    console.log(mainScreen);
 }
 rowOne.appendChild(backspaceButton);
 
@@ -383,7 +382,7 @@ function noOperatorOnEnd(){
 }
 
 function addOperator(operatorInput){
-    if ((mainScreen !== (" ")) && ((mainScreen[mainScreen.length-2] !== ("%")) && (mainScreen[mainScreen.length-1] !== (".")) && (mainScreen[mainScreen.length-2] !== ("+")) && (mainScreen[mainScreen.length-2] !== ("-")) && (mainScreen[mainScreen.length-2] !== ("/")) && (mainScreen[mainScreen.length-2] !== ("*")))){
+    if ((mainScreen.length < 35) && (mainScreen !== (" ")) && ((mainScreen[mainScreen.length-2] !== ("%")) && (mainScreen[mainScreen.length-1] !== (".")) && (mainScreen[mainScreen.length-2] !== ("+")) && (mainScreen[mainScreen.length-2] !== ("-")) && (mainScreen[mainScreen.length-2] !== ("/")) && (mainScreen[mainScreen.length-2] !== ("*")))){
         mainScreen = mainScreen + " " + operatorInput + " ";
         mainScreenText.innerHTML = mainScreen;
         decimalCounter = 0;
@@ -392,7 +391,7 @@ function addOperator(operatorInput){
 }
 
 function addNumbertoScreen(numberInput){
-    if (mainScreen[mainScreen.length-2] !== (")")){
+    if (mainScreen.length < 35){
     mainScreen = mainScreen + numberInput;
     mainScreenText.innerHTML = mainScreen;
     finalAnswer = 0;

@@ -1,0 +1,99 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: burlywood;
+}
+
+.calcPad {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 50px;
+    background-color: rgb(100, 99, 100);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 10px 10px rgb(51, 51, 51);
+}
+
+.internal-border {
+    background-color: silver;
+    padding: 10px;
+}
+
+.display {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    flex-direction: column;
+    border-style: solid;
+    width: 318px;
+    height: 100px;
+    background-color: rgb(39, 39, 2);
+     border-radius: 25px;
+}
+
+.display-history, .display-current {
+    background-color: rgb(177, 177, 0);
+    text-align: right;
+    font-weight: bold;
+    margin-right: 15px;
+    border-radius: 25px;
+    padding: 5px 15px;
+    min-width: 235px;
+    min-height: 20px;
+}
+
+.rowOne,.rowTwo,.rowThree,.rowThree,.rowFour,.rowFive,.rowSix,.rowSeven,.rowEight {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rowZero {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding-right: 10px;
+    background-color: rgb(48, 48, 45);
+    border: 1px solid black;
+    color: white;
+    margin-bottom: 5px;
+    font-weight: 700;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9px;
+    width: 354px;
+    height: 55px;
+}
+
+.screen {
+    background-color: aqua;
+}
+
+.numPad {
+    background-color: black;
+    
+}
+
+button {
+    width: 89.5px;
+    height: 90px;
+    margin: 1px;
+    padding: 14px;
+    font-weight: 700;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    background-color: rgb(255, 255, 255);
+}
+
+.key, .bigKey {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-style: solid;
+    width: 75px;
+    height: 75px;
+    font-size: 30px;
+}
