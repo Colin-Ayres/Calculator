@@ -82,11 +82,6 @@ backspaceButton.onclick = function () {
     } else if (mainScreen === ("You can't divide by 0")) {
         mainScreen = " ";
         decimalCounter = 0;
-    } else if (mainScreen[0] === (" ")) {
-        mainScreen = "Awaiting input";
-        mainScreenText.innerHTML = mainScreen;
-        mainScreen = " ";
-        decimalCounter = 0;
     } else if (mainScreen[mainScreen.length-1] == (" ")) {
         mainScreen = mainScreen.substring(0, mainScreen.length - 2);
         mainScreenText.innerHTML = mainScreen;
