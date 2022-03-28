@@ -1,6 +1,9 @@
-mainScreen = ["Awaiting input"];
-decimalCounter = 0;
-
+let mainScreen = ["Awaiting input"];
+let decimalCounter = 0;
+let userInputArray = [];
+let formattedArray = [];
+let intermediateArray = [];
+let finalAnswer = 0;
 
 ///////////////////////////////////////////DOM Manipulation Begin///////////////////////////////////////////
 //Create container variables
@@ -39,6 +42,7 @@ dzButton.onclick = function () {
     mainScreenText.innerHTML = mainScreen;
     resultHitCounter = 1;
     mainScreen = " ";
+    finalAnswer = 0;
 }
 rowOne.appendChild(dzButton);
 
@@ -49,8 +53,10 @@ clearButton.innerHTML = "C";
 clearButton.type = "submit";
 clearButton.name = "formBtn";
 clearButton.onclick = function () {
-    mainScreen = "Cleared, awaiting input";
+    mainScreen = "Awaiting input";
     mainScreenText.innerHTML = mainScreen; 
+    mainScreen = " ";
+    decimalCounter = 0;
 }
 rowOne.appendChild(clearButton);
 
@@ -61,8 +67,38 @@ backspaceButton.innerHTML = "<--";
 backspaceButton.type = "submit";
 backspaceButton.name = "formBtn";
 backspaceButton.onclick = function () {
-    //mainScreen = mainScreen - mainScreen[mainScreen.length - 1];
-    //mainScreenText.innerHTML = mainScreen; 
+    console.log(mainScreen);
+    if (mainScreen.length == 2) {
+        mainScreen = "Awaiting input";
+        mainScreenText.innerHTML = mainScreen;
+        mainScreen = " ";
+        decimalCounter = 0;
+    } else if (mainScreen === (" ")) {
+        mainScreen = " ";
+        decimalCounter = 0;
+    } else if (mainScreen === ("")) {
+        mainScreen = " ";
+        decimalCounter = 0;
+    } else if (mainScreen === ("You can't divide by 0")) {
+        mainScreen = " ";
+        decimalCounter = 0;
+    } else if (mainScreen[0] === (" ")) {
+        mainScreen = "Awaiting input";
+        mainScreenText.innerHTML = mainScreen;
+        mainScreen = " ";
+        decimalCounter = 0;
+    } else if (mainScreen[mainScreen.length-1] == (" ")) {
+        mainScreen = mainScreen.substring(0, mainScreen.length - 2);
+        mainScreenText.innerHTML = mainScreen;
+    } else if (mainScreen[mainScreen.length-1] == (".")) {
+        mainScreen = mainScreen.substring(0, mainScreen.length - 1);
+        mainScreenText.innerHTML = mainScreen;
+        decimalCounter = 0;
+    } else {
+        mainScreen = mainScreen.substring(0, mainScreen.length - 1);
+        mainScreenText.innerHTML = mainScreen;
+    }
+    console.log(mainScreen);
 }
 rowOne.appendChild(backspaceButton);
 
@@ -75,9 +111,12 @@ inverseButton.name = "formBtn";
 inverseButton.onclick = function () {
     //execute operation immediately
     if (noOperatorOnEnd() == true){
-        mainScreen = "inverse";
-        mainScreenText.innerHTML = mainScreen;
-        mainScreen = " ";
+        storeArray(mainScreen);
+        formatArray(userInputArray);
+        evaluateArray(formattedArray);
+        finalAnswer = (1/(Number(finalAnswer))).toFixed(4);
+        mainScreenText.innerHTML = finalAnswer;
+        mainScreen = "  ";
         decimalCounter = 0;    
     }
 }
@@ -90,13 +129,13 @@ squaredButton.innerHTML = "n²";
 squaredButton.type = "submit";
 squaredButton.name = "formBtn";
 squaredButton.onclick = function () {
-    //
-    //immediately square mainScreen and output result
-    //ResultHitcounter = 1;
     if (noOperatorOnEnd() == true){
-        mainScreen = "squared";
-        mainScreenText.innerHTML = mainScreen;
-        mainScreen = " ";
+        storeArray(mainScreen);
+        formatArray(userInputArray);
+        evaluateArray(formattedArray);
+        finalAnswer = Math.pow(Number(finalAnswer), 2).toFixed(4); 
+        mainScreenText.innerHTML = finalAnswer;
+        mainScreen = "  ";
         decimalCounter = 0;    
     }
 
@@ -110,17 +149,15 @@ sqrrootButton.innerHTML = "√";
 sqrrootButton.type = "submit";
 sqrrootButton.name = "formBtn";
 sqrrootButton.onclick = function () {
-    //if main screen only has numbers
-    //topScreen = sqrt(mainScreen)
-    //immediately square mainScreen and output result
-    //resulthitcounter = 1;
     if (noOperatorOnEnd() == true){
-        mainScreen = "square root";
-        mainScreenText.innerHTML = mainScreen;
-        mainScreen = " ";
+        storeArray(mainScreen);
+        formatArray(userInputArray);
+        evaluateArray(formattedArray);
+        finalAnswer = Math.sqrt(Math.abs(Number(finalAnswer))).toFixed(4); 
+        mainScreenText.innerHTML = finalAnswer;
+        mainScreen = "  ";
         decimalCounter = 0;    
     }
-
 }
 rowTwo.appendChild(sqrrootButton);
 
@@ -275,7 +312,15 @@ oppositeButton.innerHTML = "+/-";
 oppositeButton.type = "submit";
 oppositeButton.name = "formBtn";
 oppositeButton.onclick = function () {
-    addOperator("*(-1)");
+    if (noOperatorOnEnd() == true){
+        storeArray(mainScreen);
+        formatArray(userInputArray);
+        evaluateArray(formattedArray);
+        finalAnswer = Number(finalAnswer * -1).toFixed(4); 
+        mainScreenText.innerHTML = finalAnswer;
+        mainScreen = "  ";
+        decimalCounter = 0;    
+    }
 }
 rowSix.appendChild(oppositeButton);
 
@@ -319,9 +364,9 @@ equalButton.type = "submit";
 equalButton.name = "formBtn";
 equalButton.onclick = function () {
     if (noOperatorOnEnd() == true){
-        mainScreen = "equals";
-        mainScreenText.innerHTML = mainScreen;
-        mainScreen = " ";
+        storeArray(mainScreen);
+        formatArray(userInputArray);
+        evaluateArray(formattedArray);
         decimalCounter = 0;    
     }
 }
@@ -330,11 +375,9 @@ rowSix.appendChild(equalButton);
 
 function noOperatorOnEnd(){
     if ((mainScreen !== (" ")) && ((mainScreen[mainScreen.length-2] !== ("%")) && (mainScreen[mainScreen.length-1] !== (".")) && (mainScreen[mainScreen.length-2] !== ("+")) && (mainScreen[mainScreen.length-2] !== ("-")) && (mainScreen[mainScreen.length-2] !== ("/")) && (mainScreen[mainScreen.length-2] !== ("*")))){
-        console.log("true")
         return true;
         
     } else {
-        console.log("false")
         return false;
     }
 }
@@ -344,6 +387,7 @@ function addOperator(operatorInput){
         mainScreen = mainScreen + " " + operatorInput + " ";
         mainScreenText.innerHTML = mainScreen;
         decimalCounter = 0;
+        finalAnswer = 0;
     }
 }
 
@@ -351,55 +395,30 @@ function addNumbertoScreen(numberInput){
     if (mainScreen[mainScreen.length-2] !== (")")){
     mainScreen = mainScreen + numberInput;
     mainScreenText.innerHTML = mainScreen;
+    finalAnswer = 0;
     }
-}
-
-function add(numberOne, numberTwo){
-    return numberOne + numberTwo;
-}
-
-function subtract(numberOne, numberTwo){
-    return numberOne - numberTwo;
-}
-
-function multiply(numberOne, numberTwo){
-    return numberOne * numberTwo;
-}
-
-function divide(numberOne, numberTwo){
-    if (numberTwo == 0)
-    {
-        return "You can't divide by 0";
-    }
-    else 
-    {
-        return numberOne / numberTwo;
-    }
-}
-
-function opposite(numberOne){
-    return numberOne * -1;
-}
-
-function mod(numberOne, numberTwo){
-    return numberOne % numberTwo;
 }
 
 function operate(numberOne, numberTwo, inputOperator){
-    if (inputOperator == "+"){
-        add(numberOne, numberTwo);
+    if (inputOperator == '+'){
+        //add(numberOne, numberTwo);
+        return numberOne + numberTwo;
     }
     else if (inputOperator == "-"){
-        subtract(numberOne,numberTwo);
+        return numberOne - numberTwo;
     }
     else if (inputOperator == "*"){
-        multiply(numberOne,numberTwo);
+        return numberOne * numberTwo;
     }
     else if (inputOperator == "/"){
-        divide(numberOne,numberTwo);
+        if (numberTwo == 0) {
+        return "You can't divide by 0";
+        } else {
+        return numberOne / numberTwo;
+        }
     }
     else if (inputOperator == "%"){
-        mod(numberOne,numberTwo);
+        return numberOne % numberTwo;
     }
     else if (inputOperator == "("){
         opposite(numberOne);
@@ -407,6 +426,46 @@ function operate(numberOne, numberTwo, inputOperator){
 
 }
 
-//convert maintext to array, get rid of all spaces, collect number, operator, then number 2nd number
-//"("" ounts as operator then skip ahead 4 places for next operator) 
-//bubble search, execute to end of string
+function storeArray (inputString){
+    inputString = inputString.replace(/\s+/g, '');
+    userInputArray = Array.from(inputString);
+}
+
+function formatArray (inputArray){
+    for (let i = 0; i < inputArray.length; i++){
+        if (i == inputArray.length-1) {
+            intermediateArray.push(inputArray[i]);
+            formattedArray.push(Number(intermediateArray.join(''))); 
+            intermediateArray = []; 
+        } else if (((inputArray[i] !== ("%")) && (inputArray[i] !== ("+")) && (inputArray[i] !== ("-")) && (inputArray[i] !== ("/")) && (inputArray[i] !== ("*")))){
+            intermediateArray.push(inputArray[i]);
+        } else {
+            formattedArray.push(Number(intermediateArray.join(''))); 
+            formattedArray.push(inputArray[i]);
+            intermediateArray = [];
+        }
+    }
+}
+
+function evaluateArray (inputArray){
+    for (let i = 0; i < inputArray.length; i++){
+        if (inputArray.length == 1) {
+            finalAnswer = inputArray[0];
+        } else if (((inputArray[i] !== ("%")) && (inputArray[i] !== ("+")) && (inputArray[i] !== ("-")) && (inputArray[i] !== ("/")) && (inputArray[i] !== ("*")))) {
+        } else {
+            console.log(inputArray[i]);
+            let operateVar = operate(inputArray[i-1],inputArray[i+1],inputArray[i]);
+            inputArray.splice(0, 3);
+            inputArray.unshift(operateVar);
+            i = -1;
+            finalAnswer = inputArray[0];
+        }
+        console.log(inputArray);
+    }
+    console.log(finalAnswer);
+    finalAnswer = Number(finalAnswer).toFixed(4);
+    intermediateArray = [];
+    formattedArray = [];   
+    mainScreenText.innerHTML = finalAnswer;
+    mainScreen = "  ";
+}
