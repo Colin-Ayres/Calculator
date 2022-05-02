@@ -14,7 +14,7 @@ Once the user has pressed an evaluator button (=, 1/n, sqrt(n), +/-), the values
 
 ## Demo
 This demo can be viewed at: https://chayre.github.io/calculator/
-### Inputting an expression via the buttons
+### Inputting an expression using the calculator buttons
 ![image](https://user-images.githubusercontent.com/88121502/165216000-bae081ec-b937-4266-b4e9-bdbef232144b.png)
 
 ## Improvements
